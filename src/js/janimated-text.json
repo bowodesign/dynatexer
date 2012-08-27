@@ -1,0 +1,39 @@
+
+Ejemplo config_json:
+{
+	lines: 19,
+	loop: 1, // default: 'infinite',
+	content: [
+		{
+			animation: 'char',
+			delay: 100, // default: 0. El delay siempre es posterior a la animación.
+			placeholder: '<span class="console_text">', // default: ''
+			text: @"Este es un texto a mostrar
+				Que está en varias líneas.
+				La animación actual es por caracter." // hacer siempre to string. Permite usar un counter. Se puede pasar un objeto. Se puede hacer un loop N de texto.
+		},
+		{
+			animation: 'line',
+			delay: 100,
+			text: @"Este es un texto a mostrar
+				Que está en varias líneas.
+				La animación actual es línea por línea."
+		},
+		{
+			animation: 'none',
+			text: @"Este es un texto a mostrar
+				Que está en varias líneas.
+				No tiene animación, se muestra
+				instantáneamente luego de mostrar el contenido anterior."
+		},
+		{
+			animation: 'replace',
+			delay: 100,
+			text: @"Este es un texto a mostrar
+				Que está en varias líneas.
+				La animación actual es siempre reemplazando
+				la línea actual del texto con
+				la siguiente"
+		}
+	]
+}
