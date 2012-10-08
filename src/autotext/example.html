@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cymait Autotext</title>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="autotext.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		
+	});
+</script>
+<style type="text/css" media="screen, projection">
+
+div.console_title span {
+	line-height: 25px;
+	margin-left: 10px;
+	color: #fff;
+	font-family: 'Ubuntu Mono', sans-serif;
+	font-weight: 700;
+}
+
+div.console_title {
+	width: 650px;
+	height: 25px;
+	background-color: #333;
+	border: 3px solid #AAA;
+	border-bottom: 0px solid #FFF;
+}
+
+div.console {
+	width: 650px;
+	height: 322px;
+	background-color: black;
+	border: 3px solid #AAA;
+	border-top: 0px solid #FFF;
+}
+
+.console, .console span {
+	font-family: 'Ubuntu Mono', sans-serif;
+	font-weight: 700;
+	//font-size: ;
+}
+
+.console_clean {
+	color: #1e63b8;
+}
+
+.console_hash {
+	color: #616161;
+}
+
+.console_pc_name {
+	color: #88659f;
+}
+
+.console_directory {
+	color: #61e1c7
+}
+
+.console_text {
+	color: #aaaaaa
+}
+
+.console_text_green {
+	color: #50a440
+}
+
+.console_text_red {
+	color: #bc2b2b
+}
+
+.console_text_white {
+	color: #fff
+}
+
+.console_text_dark_green {
+	color: #018167
+}
+
+span.console_cursor {
+	background-color: #aaaaaa
+}
+
+</style>
+</head>
+
+<body>
+	<div class="console_title">
+		<span>Terminal</span>
+	</div>
+	<div class="console">
+		<span class="console_clean">(M</span><span class="console_hash">=bc6b7</span><span class="console_clean">) you</span><span class="console_pc_name">@laptop</span>
+		<span class="console_directory">~/gitdeployer&gt;</span>
+		<span class="console_cursor">&nbsp;</span>
+		<span class="console_text">
+			git checkout deploy <br />
+			Switched to branch 'deploy' <br />
+		</span>
+
+		<span class="console_clean">(deploy</span><span class="console_hash">=04b02</span><span class="console_clean">) you</span><span class="console_pc_name">@laptop</span>
+		<span class="console_directory">~/gitdeployer&gt;</span>
+		<span class="console_cursor">&nbsp;</span>
+		<span class="console_text">
+			git merge master <br />
+			Merge made by the 'recursive' strategy. <br />
+			&nbsp;src/index.html |    7 <span class="console_text_green">++++++</span><span class="console_text_red">-</span> <br />
+			&nbsp;1 file changed, 6 insertions(+), 1 deletion(-) <br />
+		</span>
+
+		<span class="console_clean">(deploy</span><span class="console_hash">=5f2cd</span><span class="console_clean">) you</span><span class="console_pc_name">@laptop</span>
+		<span class="console_directory">~/gitdeployer&gt;</span>
+		<span class="console_cursor">&nbsp;</span>
+		<span class="console_text">
+			git diff master deploy <br />
+			<span class="console_text_white">
+				diff --git a/src/hello-world/index.html b/src/hello-world/index.html <br />
+				index 0dfff60..727193f 100644 <br />
+				--- a/src/hello-world/index.html <br />
+				+++ b/src/hello-world/index.html <br />
+			</span>
+			<span class="console_text_dark_green">@@ -43,7 +43,7 @@</span> <br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="container"&gt; <br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="row"&gt; <br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="span12"&gt; <br />
+			<span class="console_text_red">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="s1 hw"&gt;This is on development mode&lt;/h1&gt; </span><br />
+			<span class="console_text_green">+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="s1 hw"&gt;Yeah, we are on production!&lt;/h1&gt; </span><br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p class="hw"&gt;As simple as issuing a push&lt;/p&gt; <br />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt; <br />
+		</span>
+
+		<span class="console_clean">(deploy</span><span class="console_hash">=5f2cd</span><span class="console_clean">) you</span><span class="console_pc_name">@laptop</span>
+		<span class="console_directory">~/gitdeployer&gt;</span>
+		<span class="console_cursor">&nbsp;</span>
+		<span class="console_text">
+			git push <br />
+			Counting objects: 12, done. <br />
+			Delta compression using up to 4 threads. <br />
+			Compressing objects: 100% (7/7), done. <br />
+			Writing objects: 100% (7/7), 722 bytes, done. <br />
+			Total 7 (delta 5), reused 0 (delta 0) <br />
+			remote: [ Thu Oct 4 01:50:06 ART 2012 ] This is Cymait Rafa Server:  You enjoy the company of other people. <br />
+			remote: [ Thu Oct 4 01:50:06 ART 2012 ] Updating Redmine project... <br />
+			remote: [ Thu Oct 4 01:50:25 ART 2012 ] Finished updating Redmine project <br />
+			To git@git.cymait.com:git-deployer-web.git <br />
+			&nbsp;&nbsp;&nbsp;04b02c0..5f2cdf5  deploy -> deploy <br />
+		</span>
+		<span class="console_clean">(deploy</span><span class="console_hash">=5f2cd</span><span class="console_clean">) you</span><span class="console_pc_name">@laptop</span>
+		<span class="console_directory">~/gitdeployer&gt;</span>
+		<span class="console_cursor">&nbsp;</span>
+	</div>
+</body>
+</html>

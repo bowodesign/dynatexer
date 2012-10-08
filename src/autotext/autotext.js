@@ -31,7 +31,7 @@
 		}
 	}
 
-	function animate_by.none(content) {
+	function animate_by.one-shot(content) {
 		var $this = $(this), data = $this.data(plugin_name);
 
 		if (!content.current_item) {
@@ -45,6 +45,13 @@
 	}
 
 	function animate_by.replace(content) {
+		var $this = $(this), data = $this.data(plugin_name);
+
+		if (content.placeholder == data.target) {
+			content.placeholder = target.append('<span>');
+		}
+
+		// convertir el texto en un objeto iterable para todas las animaciones
 		// TODO chequear si el placeholder == taget porque en
 		// ese caso no tiene su propio placeholder.
 		// El de reemplazo tiene que tener su propio porque pisa todo el contenido.
@@ -60,7 +67,7 @@
 			content.placeholder = target;
 		} else if (typeof content.placeholder == "string") {
 			// it creates de tag and saves the selector to the content
-			content.placeholder = target.add(content.placeholder);
+			content.placeholder = target.append(content.placeholder);
 		}
 	}
 

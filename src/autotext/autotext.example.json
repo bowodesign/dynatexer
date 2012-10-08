@@ -1,5 +1,3 @@
-
-Ejemplo config_json:
 {
 	lines: 19,
 	loop: 1, // default: 'infinite',
@@ -20,7 +18,7 @@ Ejemplo config_json:
 				La animación actual es línea por línea."
 		},
 		{
-			animation: 'none',
+			animation: 'one-shot',
 			text: @"Este es un texto a mostrar
 				Que está en varias líneas.
 				No tiene animación, se muestra
