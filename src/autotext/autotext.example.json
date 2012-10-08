@@ -3,35 +3,32 @@
 	loop: 1, // default: 'infinite',
 	content: [
 		{
-			animation: 'char',
+			animation: 'additive', // default
 			delay: 100, // default: 0. El delay siempre es posterior a la animación.
 			placeholder: '<span class="console_text">', // default: ''
-			text: @"Este es un texto a mostrar
-				Que está en varias líneas.
-				La animación actual es por caracter." // hacer siempre to string. Permite usar un counter. Se puede pasar un objeto. Se puede hacer un loop N de texto.
+			render-strategy: 'text-by-char',
+			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter." // hacer siempre to string. Permite usar un counter. Se puede pasar un objeto. Se puede hacer un loop N de texto.
 		},
 		{
-			animation: 'line',
+			animation: 'additive',
 			delay: 100,
-			text: @"Este es un texto a mostrar
-				Que está en varias líneas.
-				La animación actual es línea por línea."
+			render-strategy: 'text-by-line',
+			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es línea por línea."
 		},
 		{
-			animation: 'one_shot',
-			text: @"Este es un texto a mostrar
-				Que está en varias líneas.
-				No tiene animación, se muestra
-				instantáneamente luego de mostrar el contenido anterior."
+			render-strategy: 'text-one-shot',
+			items: "Este es un texto a mostrar\nQue está en varias líneas.\nNo tiene animación, se muestra\ninstantáneamente luego de mostrar el contenido anterior."
 		},
 		{
 			animation: 'replace',
 			delay: 100,
-			text: @"Este es un texto a mostrar
-				Que está en varias líneas.
-				La animación actual es siempre reemplazando
-				la línea actual del texto con
-				la siguiente"
+			items: myobject // con método iterator, o coleccion, que devuelva una objeto que tenga un método has_next y un next
+		},
+		{
+			animation: 'additive',
+			delay: 100,
+			render-strategy: 'iterator',
+			items: myobject // con método iterator que devuelva una objeto que tenga un método has_next y un next
 		}
 	]
 }
