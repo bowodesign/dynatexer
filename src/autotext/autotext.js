@@ -2,15 +2,30 @@
 
 	var plugin_name = "autotext";   // Name of the plugin
 
+	function nl2br (str, is_xhtml) {   
+		var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+		return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag);
+	}
+
 	var animations = {
 		char: function(data, content) {
 			if (!content.current_item) {
 				content.current_item = 0;
 			}
+			//content.text = nl2br(content.text);
 			if (data.running && content.current_item < content.text.length) {
 				setTimeout(function()
 					{
-						content.placeholder.html(content.placeholder.html() + content.text.charAt(content.current_item));
+						char = content.text.charAt(content.current_item);
+						if (char == '\r') {
+							// ignoro el \r
+							content.current_item++;
+							char = content.text.charAt(content.current_item);
+						}
+						if (char == '\n') {
+							char = '<br />';
+						}
+						content.placeholder.html(content.placeholder.html() + char);
 						content.current_item++;
 						animations.char(data, content);
 					}, content.delay);

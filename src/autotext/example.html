@@ -83,13 +83,14 @@ span.console_cursor {
 	jQuery(document).ready(function(){
 		$('.console').autotext({
 			lines: 19,
+			cols: 200,
 			loop: 1,
 			content: [
 				{
 					animation: 'char',
 					delay: 50,
 					placeholder: '<span class="console_text">',
-					text: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter."
+					text: "<div> Hola que tal</div>Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter."
 				}
 			]
 		});
