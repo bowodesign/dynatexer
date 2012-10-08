@@ -18,7 +18,7 @@
 				La animación actual es línea por línea."
 		},
 		{
-			animation: 'one-shot',
+			animation: 'one_shot',
 			text: @"Este es un texto a mostrar
 				Que está en varias líneas.
 				No tiene animación, se muestra

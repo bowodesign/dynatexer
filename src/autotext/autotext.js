@@ -2,72 +2,64 @@
 
 	var plugin_name = "autotext";   // Name of the plugin
 
-	function animate_by.char(content) {
-		var $this = $(this), data = $this.data(plugin_name);
+	var animations = {
+		char: function(data, content) {
+			if (!content.current_item) {
+				content.current_item = 0;
+			}
+			if (data.running && content.current_item < content.text.length) {
+				setTimeout(function()
+					{
+						content.placeholder.html(content.placeholder.html() + content.text.charAt(content.current_item));
+						content.current_item++;
+						animations.char(data, content);
+					}, content.delay);
+			}
+		},
+		line: function(data, content) {
+			if (!content.current_item) {
+				content.current_item = 0;
+			}
+			var lines = content.text.match(/^.*((\r\n|\n|\r)|$)/gm);
+			if (data.running && content.current_item < lines.length) {
+				setTimeout(function()
+					{
+						content.placeholder.append(lines[content.current_item]);
+						content.current_item++;
+						animations.line(data, content);
+					}, content.delay);
+			}
+		},
+		one_shot: function(data, content) {
+			if (!content.current_item) {
+				content.current_item = 0;
+			}
+			if (content.current_item = 0 && data.running) {
+				setTimeout(function()
+					{
+						content.placeholder.append(content.text);
+						content.current_item++
+					}, content.delay);
+			}
+		},
+		replace: function(data, content) {
+			if (content.placeholder == data.target) {
+				content.placeholder = target.append('<span>');
+			}
 
-		// TODO check if this is escaping html
-		if (!content.current_item) {
-			content.current_item = 0;
+			// convertir el texto en un objeto iterable para todas las animaciones
+			// TODO chequear si el placeholder == taget porque en
+			// ese caso no tiene su propio placeholder.
+			// El de reemplazo tiene que tener su propio porque pisa todo el contenido.
 		}
-		while (data.running && content.current_item < content.text.length - 1) {
-			content.placeholder.append(content.text.charAt(content.current_item));
-			content.current_item++;
-			delay(content.delay);
-		}
-	}
-
-	function animate_by.line(content) {
-		var $this = $(this), data = $this.data(plugin_name);
-
-		// TODO check if this is escaping html
-		if (!content.current_item) {
-			content.current_item = 0;
-		}
-		var lines = content.text.match(/^.*((\r\n|\n|\r)|$)/gm);
-		while (data.running && content.current_item < lines.length - 1) {
-			content.placeholder.append(lines[content.current_item]);
-			content.current_item++;
-			delay(content.delay);
-		}
-	}
-
-	function animate_by.one-shot(content) {
-		var $this = $(this), data = $this.data(plugin_name);
-
-		if (!content.current_item) {
-			content.current_item = 0;
-		}
-		if (content.current_item = 0 && data.running) {
-			content.placeholder.append(content.text);
-			content.current_item++
-			delay(content.delay);
-		}
-	}
-
-	function animate_by.replace(content) {
-		var $this = $(this), data = $this.data(plugin_name);
-
-		if (content.placeholder == data.target) {
-			content.placeholder = target.append('<span>');
-		}
-
-		// convertir el texto en un objeto iterable para todas las animaciones
-		// TODO chequear si el placeholder == taget porque en
-		// ese caso no tiene su propio placeholder.
-		// El de reemplazo tiene que tener su propio porque pisa todo el contenido.
-	}
-
-	function content(content_data) {
-		this.render_next = [content_data.animation];
-		this.data = content_data.text;
 	}
 
 	function render_placeholder(content, target) {
 		if (!content.placeholder) {
 			content.placeholder = target;
 		} else if (typeof content.placeholder == "string") {
-			// it creates de tag and saves the selector to the content
-			content.placeholder = target.append(content.placeholder);
+			content.placeholder = $(content.placeholder);
+			target.append(content.placeholder);
 		}
 	}
 
@@ -92,11 +84,13 @@
 			return this.each(function() {
 				var $this = $(this), data = $this.data(plugin_name);
 
+				data.running = true;
+
 				while (data.running && data.current_content < data.content.length) {
-					content = data.content[content_index];
+					content = data.content[data.current_content];
 					data.current_content++;
-					render_placeholder(content, data.taget);
-					animate_by.[content.animation](content);
+					render_placeholder(content, data.target);
+					animations[content.animation](data, content);
 				}
 			});
 		},
@@ -113,11 +107,11 @@
 
 				data.running = false;
 				data.current_content = 0;
-				for (int i = 0; i < data.content.length; ++i) {
-					data.content.current_item = 0;
-				}
+				$.each(data.content, function(i, val) {
+					val.current_item = 0;
+				});
 			});
-		}
+		},
 		configure : function( config ) {
 			var $this = $(this), data = $this.data(plugin_name);
 				$(this).data(plugin_name, {
