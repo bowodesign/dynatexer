@@ -32,7 +32,7 @@
 	}
 
 	line_iterator.prototype.next = function() {
-		return this.lines[this.current_line++];
+		return this.lines[this.current_line++] + '<br />';
 	}
 
 	function char_iterator(text) {
@@ -62,12 +62,12 @@
 	}
 
 	one_shot_iterator.prototype.has_next = function() {
-		return this.listed;
+		return !this.listed;
 	}
 
 	one_shot_iterator.prototype.next = function() {
 		this.listed = true;
-		return this.text
+		return nl2br(this.text);
 	}
 
 	var animations = {
@@ -89,7 +89,7 @@
 			if (data.running && content.current_iterator.has_next()) {
 				setTimeout(function() {
 					content.placeholder.html(content.current_iterator.next());
-					animations.additive(data, content);
+					animations.replace(data, content);
 				}, content.delay);
 			}
 		}
