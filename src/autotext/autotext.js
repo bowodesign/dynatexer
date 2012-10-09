@@ -61,11 +61,11 @@
 		this.text = text;
 	}
 
-	char_iterator.prototype.has_next = function() {
+	one_shot_iterator.prototype.has_next = function() {
 		return this.listed;
 	}
 
-	char_iterator.prototype.next = function() {
+	one_shot_iterator.prototype.next = function() {
 		this.listed = true;
 		return this.text
 	}
@@ -106,6 +106,7 @@
 			return new one_shot_iterator(items.toString());
 		},
 		iterator: function(items) {
+			// falta otra estrategia array-items o testear acá... Me parece mejor 'array-items'
 			return items.iterator();
 		}
 	}
