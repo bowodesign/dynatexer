@@ -22,19 +22,6 @@
 		}
 	}
 
-	function line_iterator(text) {
-		this.current_line = 0;
-		this.lines = text.match(/^.*((\r\n|\n|\r)|$)/gm);
-	}
-
-	line_iterator.prototype.has_next = function() {
-		return this.current_line < this.lines.length;
-	}
-
-	line_iterator.prototype.next = function() {
-		return this.lines[this.current_line++] + '<br />';
-	}
-
 	function char_iterator(text) {
 		this.current_char = 0;
 		this.text = text;
@@ -68,6 +55,32 @@
 	one_shot_iterator.prototype.next = function() {
 		this.listed = true;
 		return nl2br(this.text);
+	}
+
+	function array_iterator(items) {
+		this.current_item = 0;
+		this.items = items;
+	}
+
+	array_iterator.prototype.has_next = function() {
+		return this.current_item < this.items.length;
+	}
+
+	array_iterator.prototype.next = function() {
+		return this.items[this.current_item++];
+	}
+
+	function line_iterator(text) {
+		lines = text.match(/^.*((\r\n|\n|\r)|$)/gm);
+		this.delegate = new array_iterator(lines);
+	}
+
+	line_iterator.prototype.has_next = function() {
+		return this.delegate.has_next();
+	}
+
+	line_iterator.prototype.next = function() {
+		return this.delegate.next() + '<br />';
 	}
 
 	var animations = {
@@ -106,8 +119,10 @@
 			return new one_shot_iterator(items.toString());
 		},
 		iterator: function(items) {
-			// falta otra estrategia array-items o testear acá... Me parece mejor 'array-items'
 			return items.iterator();
+		},
+		'array-items': function(items) {
+			return new array_iterator(items);
 		}
 	}
 
