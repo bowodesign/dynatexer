@@ -7,12 +7,20 @@
 		return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag);
 	}
 
-	function create_placeholder(content, target) {
-		if (!content.placeholder || content.placeholder == '') {
-			content.placeholder_tag = target;
-		} else {
-			content.placeholder_tag = $(content.placeholder);
-			target.append(content.placeholder_tag);
+	function create_placeholder(content, data) {
+		if (!content.placeholder_tag) {
+			if (!content.placeholder || content.placeholder == '') {
+				content.placeholder_tag = target;
+			} else {
+				placeholder_tag = $(content.placeholder);
+				if (data.cursor && data.cursor.placeholder_tag) {
+					content.placeholder_tag = placeholder_tag;
+					content.placeholder_tag.insertBefore(data.cursor.placeholder_tag);
+				} else {
+					content.placeholder_tag = placeholder_tag;
+					data.target.append(content.placeholder_tag);
+				}
+			}
 		}
 	}
 
@@ -86,7 +94,7 @@
 	var animations = {
 		additive: function(data, content, finish_callback) {
 			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
-			create_placeholder(content, data.target);
+			create_placeholder(content, data);
 			assign_iterator(content);
 
 			var secuence = function() {
@@ -107,7 +115,7 @@
 			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
 			// placeholder is necessary
 			if (!content.placeholder || content.placeholder == '') content.placeholder = '<span>';
-			create_placeholder(content, data.target);
+			create_placeholder(content, data);
 			assign_iterator(content);
 
 			var secuence = function() {
@@ -147,9 +155,18 @@
 	function clean(data) {
 		$.each(data.content, function(i, val) {
 			val.current_iterator = null;
+			val.placeholder_tag = null;
 		});
 		data.current_content = 0;
-		data.target.children().remove();
+		data.target.children().not(data.cursor.placeholder).remove();
+		reset_cursor(data);
+	}
+
+	function reset_cursor(data) {
+		if (data.cursor) {
+			data.cursor.current_iterator = null;
+			data.cursor.placeholder_tag.children().remove();
+		}
 	}
 
 	var methods = {
@@ -165,8 +182,17 @@
 						content: config.content,
 						current_content: 0,
 						times: 0,
-						running: false
+						running: false,
+						cursor: config.cursor
 					});
+					data = $this.data(plugin_name);
+					if (typeof(data.cursor) != "undefined") {
+						if (typeof(data.cursor.placeholder) == "undefined" || data.cursor.placeholder == '') {
+							data.cursor.placeholder = '<span>';
+						}
+						data.cursor.times = 0;
+						// default values of cursor
+					}
 				}
 			});
 		},
@@ -209,6 +235,28 @@
 					}
 				}
 				secuence();
+
+				var cursor = function() {
+					if (data.running && data.cursor) {
+						animations[data.cursor.animation](
+							data,
+							data.cursor,
+							function() {
+								if (data.cursor.loop == 'infinite' || data.cursor.loop < 1) {
+									reset_cursor(data);
+									cursor();
+								} else {
+									++data.cursor.times;
+									if (data.cursor.times < data.cursor.loop) {
+										reset_cursor(data);
+										cursor();
+									}
+								}
+							}
+						);
+					}
+				}
+				cursor();
 			});
 		},
 		pause : function( ) {
@@ -224,19 +272,14 @@
 
 				data.running = false;
 				data.times = 0;
+				if (typeof(data.cursor) != "undefined") {
+					data.cursor.times = 0;
+				}
 				clean(data);
 			});
 		},
 		configure : function( config ) {
-			var $this = $(this), data = $this.data(plugin_name);
-				$(this).data(plugin_name, {
-					lines: config.lines,
-					loop: config.loop,
-					content: config.content,
-					current_content: 0,
-					times: 0,
-					running: false
-				});
+			return this.method['init'](arguments);
 		}
 	};
 

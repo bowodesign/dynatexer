@@ -4,7 +4,7 @@
 		{
 			animation: 'additive', // default: additive | opciones: additive, replace
 			delay: 100, // default: 100 el delay es anterior a la animación.
-			placeholder: '<span class="console_text">', // default: ''
+			placeholder: '<span class="console_text">', // default: '<span>'
 			render-strategy: 'text-by-char', // default: text-one-shot | opciones: text-by-char, text-by-line, text-one-shot, iterator, array-items
 			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter." // default: '' | opciones: string, objeto con método toString()
 		},
@@ -41,5 +41,13 @@
 				}
 			}
 		}
-	]
+	],
+	cursor: { // es igual que un content pero la animación se realiza en paralelo y es cíclica. Solo se admite un contenido y siempre es el último elemento.
+		loop: 'infinite', // la opción por default es infinite. Esta opción es válida para el cursor pero no para los contents
+		animation: 'replace', // default para el cursor
+		delay: 500,
+		placeholder: '<span class="cursor">',
+		render-strategy: 'array-items',
+		items: ['&nbsp;', '']
+	}
 }
