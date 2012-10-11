@@ -92,8 +92,7 @@ span.console_cursor {
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		$('.content').autotext({
-			lines: 19,
-			loop: 2,
+			loop: 1,
 			content: [
 				{
 					animation: 'additive',
@@ -124,15 +123,16 @@ span.console_cursor {
 					items: {
 						iterator: function() {
 							return {
-								has_next: function() {return true;},
-								next: function() {if (typeof this.i == "undefined") this.i = 0; return "lineas numeradas: " + ++this.i + " <br>";}
+								i: 0,
+								has_next: function() {return this.i < 30;},
+								next: function() {return "lineas numeradas: " + ++this.i + " <br>";}
 							}
 						}
 					}
 				}
 			]
 		});
-		$('.content').autotext('play', function() {alert("hola, termine!")});
+		$('.content').autotext('play', function() {alert("Este mensaje se muestra al llamarse a la callback. Animación terminada!")});
 	});
 </script>
 </head>
