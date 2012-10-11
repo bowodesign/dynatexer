@@ -1,13 +1,12 @@
 {
-	lines: 19,
-	loop: 1, // default: 'infinite',
+	loop: 1, // default: 1,
 	content: [
 		{
-			animation: 'additive', // default
-			delay: 100, // default: 0. El delay siempre es posterior a la animación.
+			animation: 'additive', // default: additive | opciones: additive, replace
+			delay: 100, // default: 100 el delay es anterior a la animación.
 			placeholder: '<span class="console_text">', // default: ''
-			render-strategy: 'text-by-char',
-			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter." // hacer siempre to string. Permite usar un counter. Se puede pasar un objeto. Se puede hacer un loop N de texto.
+			render-strategy: 'text-by-char', // default: text-one-shot | opciones: text-by-char, text-by-line, text-one-shot, iterator, array-items
+			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter." // default: '' | opciones: string, objeto con método toString()
 		},
 		{
 			animation: 'additive',
@@ -22,13 +21,25 @@
 		{
 			animation: 'replace',
 			delay: 100,
-			items: myobject // con método iterator, o coleccion, que devuelva una objeto que tenga un método has_next y un next
+			render-strategy: 'array-items',
+			items: ["item1", "item2", "item3"]
 		},
 		{
 			animation: 'additive',
 			delay: 100,
 			render-strategy: 'iterator',
-			items: myobject // con método iterator que devuelva una objeto que tenga un método has_next y un next
+			items: {
+				iterator: function() {
+					return {
+						has_next: function() {
+							// devuelve booleano indicando si quedan elementos
+						},
+						next: function() {
+							// devuelve string u objeto con método toString()
+						}
+					}
+				}
+			}
 		}
 	]
 }
