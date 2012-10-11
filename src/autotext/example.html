@@ -141,16 +141,19 @@ span.console_cursor {
 			}
 		});
 		$('.content').autotext('play', function() {alert("Este mensaje se muestra al llamarse a la callback. Animación terminada!")});
-		$('#play').click(function() {
+		$('#play').click(function(e) {
 			$('.content').autotext('play');
+			e.preventDefault();
 		});
-		$('#pause').click(function() {
+		$('#pause').click(function(e) {
 			$('.content').autotext('pause');
+			e.preventDefault();
 		});
-		$('#reset').click(function() {
+		$('#reset').click(function(e) {
 			$('.content').autotext('reset');
+			e.preventDefault();
 		});
-		$('#configure').click(function() {
+		$('#configure').click(function(e) {
 			$('.content').autotext('configure', {
 				loop: 1,
 				content: [
@@ -171,6 +174,7 @@ span.console_cursor {
 					items: ['&nbsp;', '']
 				}
 			});
+			e.preventDefault();
 		});
 	});
 </script>
