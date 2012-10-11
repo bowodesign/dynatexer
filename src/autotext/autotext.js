@@ -84,27 +84,45 @@
 	}
 
 	var animations = {
-		additive: function(data, content) {
+		additive: function(data, content, finish_callback) {
+			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
 			create_placeholder(content, data.target);
 			assign_iterator(content);
-			if (data.running && content.current_iterator.has_next()) {
-				setTimeout(function() {
-					content.placeholder.html(content.placeholder.html() + content.current_iterator.next());
-					animations.additive(data, content);
-				}, content.delay);
+
+			var secuence = function() {
+				if (data.running) {
+					if (content.current_iterator.has_next()) {
+						setTimeout(function() {
+							content.placeholder.html(content.placeholder.html() + content.current_iterator.next());
+							secuence();
+						}, content.delay);
+					} else {
+						finish_callback();
+					}
+				}
 			}
+			secuence();
 		},
-		replace: function(data, content) {
+		replace: function(data, content, finish_callback) {
+			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
 			// placeholder is necessary
 			if (!content.placeholder || content.placeholder == '') content.placeholder = '<span>';
 			create_placeholder(content, data.target);
 			assign_iterator(content);
-			if (data.running && content.current_iterator.has_next()) {
-				setTimeout(function() {
-					content.placeholder.html(content.current_iterator.next());
-					animations.replace(data, content);
-				}, content.delay);
+
+			var secuence = function() {
+				if (data.running) {
+					if (content.current_iterator.has_next()) {
+						setTimeout(function() {
+							content.placeholder.html(content.current_iterator.next());
+							secuence();
+						}, content.delay);
+					} else {
+						finish_callback();
+					}
+				}
 			}
+			secuence();
 		}
 	}
 
@@ -143,17 +161,32 @@
 				}
 			});
 		},
-		play : function( ) {
+		play : function (finish_callback) {
+			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
 			return this.each(function() {
 				var $this = $(this), data = $this.data(plugin_name);
 
 				data.running = true;
 
-				while (data.running && data.current_content < data.content.length) {
-					content = data.content[data.current_content];
-					data.current_content++;
-					animations[content.animation](data, content);
+				var secuence = function() {
+					if (data.running) {
+						if (data.current_content < data.content.length) {
+							content = data.content[data.current_content];
+							animations[content.animation](
+								data,
+								content,
+								function() {
+									++data.current_content;
+									secuence();
+								}
+							);
+						} else {
+							data.running = false;
+							finish_callback();
+						}
+					}
 				}
+				secuence();
 			});
 		},
 		pause : function( ) {
