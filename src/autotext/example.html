@@ -30,6 +30,16 @@ div.console {
 	background-color: black;
 	border: 3px solid #AAA;
 	border-top: 0px solid #FFF;
+	overflow: hidden;
+	position: relative;
+}
+
+div.content {
+	position: absolute;
+	margin-bottom: 2px;
+	margin-left: 4px;
+	bottom: 0;
+	min-height: 322px;
 }
 
 .console, .console span {
@@ -81,20 +91,48 @@ span.console_cursor {
 
 <script type="text/javascript">
 	jQuery(document).ready(function(){
-		$('.console').autotext({
+		$('.content').autotext({
 			lines: 19,
-			loop: 1,
+			loop: 2,
 			content: [
 				{
 					animation: 'additive',
 					delay: 50,
 					placeholder: '<span class="console_text">',
 					render_strategy: 'text-by-char',
-					items: "<div> Hola que tal</div>Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter."
+					items: "Primero un texto de presentación\nQue se va a ir tipeando\ncaracter por caracter.\nEsto simula ser una consola.\n"
+				},
+				{
+					animation: 'additive',
+					delay: 1000,
+					placeholder: '<span class="console_text">',
+					render_strategy: 'text-by-line',
+					items: "Luego un texto que se va mostrando\nlínea por línea y un poco más lento\nPero ATENCION, las próximas líneas se reemplazan entre sí\n"
+				},
+				{
+					animation: 'replace',
+					delay: 2500,
+					placeholder: '<span class="console_text">',
+					render_strategy: 'text-by-line',
+					items: "Ya ven que esta línea se muestra\nPero ahora se muestra esta\nY luego van cambiando...\nUNA\nA\nUNA"
+				},
+				{
+					animation: 'additive',
+					delay: 100,
+					placeholder: '<span class="console_text">',
+					render_strategy: 'iterator',
+					items: {
+						iterator: function() {
+							return {
+								has_next: function() {return true;},
+								next: function() {if (typeof this.i == "undefined") this.i = 0; return "lineas numeradas: " + ++this.i + " <br>";}
+							}
+						}
+					}
 				}
 			]
 		});
-		$('.console').autotext('play');
+		$('.content').autotext('play', function() {alert("hola, termine!")});
 	});
 </script>
 </head>
@@ -104,6 +142,8 @@ span.console_cursor {
 		<span>Terminal</span>
 	</div>
 	<div class="console">
+		<div class="content">
+		</div>
 	</div>
 </body>
 </html>
