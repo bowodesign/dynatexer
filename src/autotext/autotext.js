@@ -355,4 +355,31 @@
 			items: []
 		}
 	}
+
+	$.fn[plugin_name].helper = {
+		counter: function(config) {
+			return {
+				iterator: function() {
+					it = {
+						config: $.extend({
+							start: 1,
+							end: 100,
+							step: 1,
+							mask: '%d'
+						}, config),
+						has_next: function() {
+							return this.index <= this.config.end;
+						},
+						next: function() {
+							temp = this.index;
+							this.index += this.config.step;
+							return this.config.mask.replace('%d', temp);
+						}
+					};
+					it.index = it.config.start;
+					return it;
+				}
+			}
+		}
+	}
 })( jQuery );
