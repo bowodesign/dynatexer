@@ -214,7 +214,6 @@
 				data.cursor.placeholder = '<span>';
 			}
 			data.cursor.times = 0;
-			// default values of cursor
 		}
 	}
 
