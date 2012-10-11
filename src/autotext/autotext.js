@@ -162,7 +162,11 @@
 			val.placeholder_tag = null;
 		});
 		data.current_content = 0;
-		data.target.children().not(data.cursor.placeholder_tag).remove();
+		if (data.cursor) {
+			data.target.children().not(data.cursor.placeholder_tag).remove();
+		} else {
+			data.target.children().remove();
+		}
 		reset_cursor(data);
 	}
 
