@@ -141,6 +141,37 @@ span.console_cursor {
 			}
 		});
 		$('.content').autotext('play', function() {alert("Este mensaje se muestra al llamarse a la callback. Animación terminada!")});
+		$('#play').click(function() {
+			$('.content').autotext('play');
+		});
+		$('#pause').click(function() {
+			$('.content').autotext('pause');
+		});
+		$('#reset').click(function() {
+			$('.content').autotext('reset');
+		});
+		$('#configure').click(function() {
+			$('.content').autotext('configure', {
+				loop: 1,
+				content: [
+					{
+						animation: 'additive',
+						delay: 50,
+						placeholder: '<span class="console_text">',
+						render_strategy: 'text-by-char',
+						items: "Simple, un texto corto y se acabó."
+					}
+				],
+				cursor: {
+					animation: 'replace',
+					loop: 'infinite',
+					delay: 500,
+					placeholder: '<span class="console_cursor">',
+					render_strategy: 'array-items',
+					items: ['&nbsp;', '']
+				}
+			});
+		});
 	});
 </script>
 </head>
@@ -153,5 +184,9 @@ span.console_cursor {
 		<div class="content">
 		</div>
 	</div>
+	<a href="#" id="play">play</a>
+	<a href="#" id="pause">pause</a>
+	<a href="#" id="reset">reset</a>
+	<a href="#" id="configure">reconfigure</a>
 </body>
 </html>

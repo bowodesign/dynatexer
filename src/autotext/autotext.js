@@ -101,7 +101,9 @@
 				if (data.running) {
 					if (content.current_iterator.has_next()) {
 						setTimeout(function() {
-							content.placeholder_tag.html(content.placeholder_tag.html() + content.current_iterator.next());
+							if (data.running) {
+								content.placeholder_tag.html(content.placeholder_tag.html() + content.current_iterator.next());
+							}
 							secuence();
 						}, content.delay);
 					} else {
@@ -122,7 +124,9 @@
 				if (data.running) {
 					if (content.current_iterator.has_next()) {
 						setTimeout(function() {
-							content.placeholder_tag.html(content.current_iterator.next());
+							if (data.running) {
+								content.placeholder_tag.html(content.current_iterator.next());
+							}
 							secuence();
 						}, content.delay);
 					} else {
@@ -158,7 +162,7 @@
 			val.placeholder_tag = null;
 		});
 		data.current_content = 0;
-		data.target.children().not(data.cursor.placeholder).remove();
+		data.target.children().not(data.cursor.placeholder_tag).remove();
 		reset_cursor(data);
 	}
 
@@ -169,37 +173,44 @@
 		}
 	}
 
+	function init($this, config) {
+		data = $this.data(plugin_name);
+
+		if ( ! data ) {
+			$this.data(plugin_name, {
+				target: $this
+			});
+		}
+		data = $this.data(plugin_name);
+
+		data.loop = config.loop;
+		data.content = config.content;
+		data.current_content = 0;
+		data.times = 0;
+		data.running = false;
+		data.cursor = config.cursor;
+
+		if (typeof(data.cursor) != "undefined") {
+			if (typeof(data.cursor.placeholder) == "undefined" || data.cursor.placeholder == '') {
+				data.cursor.placeholder = '<span>';
+			}
+			data.cursor.times = 0;
+			// default values of cursor
+		}
+	}
+
 	var methods = {
 		init : function( config ) {
 			return this.each(function() {
-				var $this = $(this), data = $this.data(plugin_name);
-
-				if ( ! data ) {
-					$(this).data(plugin_name, {
-						target: $this,
-						lines: config.lines,
-						loop: config.loop,
-						content: config.content,
-						current_content: 0,
-						times: 0,
-						running: false,
-						cursor: config.cursor
-					});
-					data = $this.data(plugin_name);
-					if (typeof(data.cursor) != "undefined") {
-						if (typeof(data.cursor.placeholder) == "undefined" || data.cursor.placeholder == '') {
-							data.cursor.placeholder = '<span>';
-						}
-						data.cursor.times = 0;
-						// default values of cursor
-					}
-				}
+				init($(this), config);
 			});
 		},
 		play : function (finish_callback) {
 			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
 			return this.each(function() {
 				var $this = $(this), data = $this.data(plugin_name);
+
+				if (data.running) return;
 
 				data.running = true;
 
@@ -270,7 +281,10 @@
 			return this.each(function() {
 				var $this = $(this), data = $this.data(plugin_name);
 
+				if (data.running === false) return;
+
 				data.running = false;
+
 				data.times = 0;
 				if (typeof(data.cursor) != "undefined") {
 					data.cursor.times = 0;
@@ -279,7 +293,12 @@
 			});
 		},
 		configure : function( config ) {
-			return this.method['init'](arguments);
+			return this.each(function() {
+				var $this = $(this), data = $this.data(plugin_name);
+				clean(data);
+				data.target.children().remove();
+				init($this, config);
+			});
 		}
 	};
 
