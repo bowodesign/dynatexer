@@ -8,11 +8,11 @@
 	}
 
 	function create_placeholder(content, target) {
-		if (!content.placeholder) {
-			content.placeholder = target;
-		} else if (typeof content.placeholder == "string") {
-			content.placeholder = $(content.placeholder);
-			target.append(content.placeholder);
+		if (!content.placeholder || content.placeholder == '') {
+			content.placeholder_tag = target;
+		} else {
+			content.placeholder_tag = $(content.placeholder);
+			target.append(content.placeholder_tag);
 		}
 	}
 
@@ -93,7 +93,7 @@
 				if (data.running) {
 					if (content.current_iterator.has_next()) {
 						setTimeout(function() {
-							content.placeholder.html(content.placeholder.html() + content.current_iterator.next());
+							content.placeholder_tag.html(content.placeholder_tag.html() + content.current_iterator.next());
 							secuence();
 						}, content.delay);
 					} else {
@@ -114,7 +114,7 @@
 				if (data.running) {
 					if (content.current_iterator.has_next()) {
 						setTimeout(function() {
-							content.placeholder.html(content.current_iterator.next());
+							content.placeholder_tag.html(content.current_iterator.next());
 							secuence();
 						}, content.delay);
 					} else {
@@ -144,6 +144,14 @@
 		}
 	}
 
+	function clean(data) {
+		$.each(data.content, function(i, val) {
+			val.current_iterator = null;
+		});
+		data.current_content = 0;
+		data.target.children().remove();
+	}
+
 	var methods = {
 		init : function( config ) {
 			return this.each(function() {
@@ -156,6 +164,7 @@
 						loop: config.loop,
 						content: config.content,
 						current_content: 0,
+						times: 0,
 						running: false
 					});
 				}
@@ -181,8 +190,21 @@
 								}
 							);
 						} else {
-							data.running = false;
-							finish_callback();
+							// a loop finished
+
+							if (data.loop == 'infinite' || data.loop < 1) {
+								clean(data);
+								secuence();
+							} else {
+								++data.times;
+								if (data.times < data.loop) {
+									clean(data);
+									secuence();
+								} else {
+									data.running = false;
+									finish_callback();
+								}
+							}
 						}
 					}
 				}
@@ -201,10 +223,8 @@
 				var $this = $(this), data = $this.data(plugin_name);
 
 				data.running = false;
-				data.current_content = 0;
-				$.each(data.content, function(i, val) {
-					val.current_iterator = null;
-				});
+				data.times = 0;
+				clean(data);
 			});
 		},
 		configure : function( config ) {
@@ -214,6 +234,7 @@
 					loop: config.loop,
 					content: config.content,
 					current_content: 0,
+					times: 0,
 					running: false
 				});
 		}
