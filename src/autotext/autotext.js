@@ -167,13 +167,14 @@
 		} else {
 			data.target.children().remove();
 		}
-		reset_cursor(data);
 	}
 
 	function reset_cursor(data) {
 		if (data.cursor) {
 			data.cursor.current_iterator = null;
-			data.cursor.placeholder_tag.children().remove();
+			if (data.cursor.placeholder_tag) {
+				data.cursor.placeholder_tag.children().remove();
+			}
 		}
 	}
 
