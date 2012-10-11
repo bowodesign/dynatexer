@@ -174,6 +174,7 @@
 			data.cursor.current_iterator = null;
 			if (data.cursor.placeholder_tag) {
 				data.cursor.placeholder_tag.children().remove();
+				data.cursor.placeholder_tag.text('');
 			}
 		}
 	}
@@ -300,8 +301,6 @@
 			return this.each(function() {
 				var $this = $(this), data = $this.data(plugin_name);
 
-				if (data.running === false) return;
-
 				data.running = false;
 
 				data.times = 0;
@@ -309,6 +308,7 @@
 					data.cursor.times = 0;
 				}
 				clean(data);
+				reset_cursor(data);
 			});
 		},
 		configure : function( config ) {
