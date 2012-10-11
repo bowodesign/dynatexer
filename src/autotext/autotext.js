@@ -173,7 +173,22 @@
 		}
 	}
 
+	function set_defaults(config) {
+		config = $.extend({}, $.fn[plugin_name].defaults.general, config);
+		content = [];
+		$.each(config.content, function(i, val) {
+			content.push($.extend({}, $.fn[plugin_name].defaults.content, val));
+		});
+		config.content = content;
+		if (typeof (config.cursor) != 'undefined') {
+			config.cursor = $.extend({}, $.fn[plugin_name].defaults.cursor, config.cursor)
+		}
+		return config;
+	}
+
 	function init($this, config) {
+		config = set_defaults(config);
+
 		data = $this.data(plugin_name);
 
 		if ( ! data ) {
@@ -315,4 +330,25 @@
 
 	};
 
+	$.fn[plugin_name].defaults = {
+		general: {
+			loop: 1,
+			content: []
+		},
+		content: {
+			animation: 'additive',
+			delay: 0,
+			placeholder: '<span>',
+			render_strategy: 'text-one-shot',
+			items: ''
+		},
+		cursor: {
+			loop: 'infinite',
+			animation: 'replace',
+			delay: 500,
+			placeholder: '<span>',
+			render_strategy: 'array-items',
+			items: []
+		}
+	}
 })( jQuery );

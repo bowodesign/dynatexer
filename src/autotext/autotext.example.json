@@ -3,31 +3,31 @@
 	content: [
 		{
 			animation: 'additive', // default: additive | opciones: additive, replace
-			delay: 100, // default: 100 el delay es anterior a la animación.
+			delay: 100, // default: 0 el delay es anterior a la animación.
 			placeholder: '<span class="console_text">', // default: '<span>'
-			render-strategy: 'text-by-char', // default: text-one-shot | opciones: text-by-char, text-by-line, text-one-shot, iterator, array-items
+			render_strategy: 'text-by-char', // default: text-one-shot | opciones: text-by-char, text-by-line, text-one-shot, iterator, array-items
 			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es por caracter." // default: '' | opciones: string, objeto con método toString()
 		},
 		{
 			animation: 'additive',
 			delay: 100,
-			render-strategy: 'text-by-line',
+			render_strategy: 'text-by-line',
 			items: "Este es un texto a mostrar\nQue está en varias líneas.\nLa animación actual es línea por línea."
 		},
 		{
-			render-strategy: 'text-one-shot',
+			render_strategy: 'text-one-shot',
 			items: "Este es un texto a mostrar\nQue está en varias líneas.\nNo tiene animación, se muestra\ninstantáneamente luego de mostrar el contenido anterior."
 		},
 		{
 			animation: 'replace',
 			delay: 100,
-			render-strategy: 'array-items',
+			render_strategy: 'array-items',
 			items: ["item1", "item2", "item3"]
 		},
 		{
 			animation: 'additive',
 			delay: 100,
-			render-strategy: 'iterator',
+			render_strategy: 'iterator',
 			items: {
 				iterator: function() {
 					return {
@@ -47,7 +47,7 @@
 		animation: 'replace', // default para el cursor
 		delay: 500,
 		placeholder: '<span class="cursor">',
-		render-strategy: 'array-items',
+		render_strategy: 'array-items',
 		items: ['&nbsp;', '']
 	}
 }
