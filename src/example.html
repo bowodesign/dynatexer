@@ -2,10 +2,10 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Cymait Autotext</title>
+<title>Cymait JQuery Dynatexer</title>
 <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="autotext.js"></script>
+<script type="text/javascript" src="dynatexer-min.js"></script>
 <style type="text/css" media="screen">
 
 div.console_title span {
@@ -91,7 +91,7 @@ span.console_cursor {
 
 <script type="text/javascript">
 	jQuery(document).ready(function(){
-		$('.content').autotext({
+		$('.content').dynatexer({
 			loop: 1,
 			content: [
 				{
@@ -120,14 +120,14 @@ span.console_cursor {
 					delay: 8000,
 					placeholder: '<span class="console_text">',
 					render_strategy: 'text-one-shot',
-					items: "\nLuego puedes usar helpers de autotext para generar\ntexto automáticamente de la forma que se te ocurra\ncomo verás a continuación el porcentaje corriendo\n"
+					items: "\nLuego puedes usar helpers de Dynatexer para generar\ntexto automáticamente de la forma que se te ocurra\ncomo verás a continuación el porcentaje corriendo\n"
 				},
 				{
 					animation: 'replace',
 					delay: 100,
 					render_strategy: 'iterator',
 					placeholder: '<span class="console_text">',
-					items: $().autotext.helper.counter({
+					items: $().dynatexer.helper.counter({
 						start: 1,
 						end: 100,
 						step: 1,
@@ -167,21 +167,21 @@ span.console_cursor {
 				items: ['&nbsp;', '']
 			}
 		});
-		$('.content').autotext('play', function() {alert("Este mensaje se muestra al llamarse a la callback. Animación terminada!")});
+		$('.content').dynatexer('play', function() {alert("Este mensaje se muestra al llamarse a la callback. Animación terminada!")});
 		$('#play').click(function(e) {
-			$('.content').autotext('play');
+			$('.content').dynatexer('play');
 			e.preventDefault();
 		});
 		$('#pause').click(function(e) {
-			$('.content').autotext('pause');
+			$('.content').dynatexer('pause');
 			e.preventDefault();
 		});
 		$('#reset').click(function(e) {
-			$('.content').autotext('reset');
+			$('.content').dynatexer('reset');
 			e.preventDefault();
 		});
 		$('#configure').click(function(e) {
-			$('.content').autotext('configure', {
+			$('.content').dynatexer('configure', {
 				loop: 1,
 				content: [
 					{

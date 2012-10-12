@@ -1,6 +1,6 @@
 (function( $ ){
 
-	var plugin_name = "autotext";   // Name of the plugin
+	var plugin_name = "dynatexer";   // Name of the plugin
 
 	function nl2br (str, is_xhtml) {   
 		var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
