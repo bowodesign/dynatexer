@@ -102,18 +102,20 @@
 		var secuence = function() {
 			if (data.running) {
 				if (content.current_iterator.has_next()) {
+					strategy.render();
 					setTimeout(function() {
 						if (data.running) {
-							strategy.render();
+							secuence();
 						}
-						secuence();
 					}, content.delay);
 				} else {
 					finish_callback();
 				}
 			}
 		}
-		secuence();
+		setTimeout(function() {
+			secuence();
+		}, 1);
 		return animated;
 	}
 
