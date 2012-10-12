@@ -91,50 +91,54 @@
 		return this.delegate.next() + '<br />';
 	}
 
+	function animate_content(data, content, finish_callback, strategy) {
+		strategy.prepare();
+
+		finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
+		assign_iterator(content);
+
+		content.current_iterator.has_next() ? animated = true : animated = false;
+
+		var secuence = function() {
+			if (data.running) {
+				if (content.current_iterator.has_next()) {
+					setTimeout(function() {
+						if (data.running) {
+							strategy.render();
+						}
+						secuence();
+					}, content.delay);
+				} else {
+					finish_callback();
+				}
+			}
+		}
+		secuence();
+		return animated;
+	}
+
 	var animations = {
 		additive: function(data, content, finish_callback) {
-			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
-			create_placeholder(content, data);
-			assign_iterator(content);
-
-			var secuence = function() {
-				if (data.running) {
-					if (content.current_iterator.has_next()) {
-						setTimeout(function() {
-							if (data.running) {
-								content.placeholder_tag.html(content.placeholder_tag.html() + content.current_iterator.next());
-							}
-							secuence();
-						}, content.delay);
-					} else {
-						finish_callback();
-					}
+			return animate_content(data, content, finish_callback, {
+				prepare: function() {
+					create_placeholder(content, data);
+				},
+				render: function() {
+					content.placeholder_tag.html(content.placeholder_tag.html() + content.current_iterator.next());
 				}
-			}
-			secuence();
+			});
 		},
 		replace: function(data, content, finish_callback) {
-			finish_callback = (typeof finish_callback === "undefined") ? function() {} : finish_callback;
-			// placeholder is necessary
-			if (!content.placeholder || content.placeholder == '') content.placeholder = '<span>';
-			create_placeholder(content, data);
-			assign_iterator(content);
-
-			var secuence = function() {
-				if (data.running) {
-					if (content.current_iterator.has_next()) {
-						setTimeout(function() {
-							if (data.running) {
-								content.placeholder_tag.html(content.current_iterator.next());
-							}
-							secuence();
-						}, content.delay);
-					} else {
-						finish_callback();
-					}
+			return animate_content(data, content, finish_callback, {
+				prepare: function() {
+					// placeholder is necessary
+					if (!content.placeholder || content.placeholder == '') content.placeholder = '<span>';
+					create_placeholder(content, data);
+				},
+				render: function() {
+					content.placeholder_tag.html(content.current_iterator.next());
 				}
-			}
-			secuence();
+			});
 		}
 	}
 
