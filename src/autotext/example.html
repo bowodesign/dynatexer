@@ -113,7 +113,34 @@ span.console_cursor {
 					delay: 2500,
 					placeholder: '<span class="console_text">',
 					render_strategy: 'array-items',
-					items: ["Ya ven que esta línea se muestra", "Pero ahora se muestra esta", "Y luego van cambiando...", "UNA", "A", "UNA <br />"]
+					items: ["Ya ven que esta línea se muestra", "Y ahora se muestra esta", "Y luego van cambiando...", "UNA A UNA <br />"]
+				},
+				{
+					animation: 'additive',
+					delay: 8000,
+					placeholder: '<span class="console_text">',
+					render_strategy: 'text-one-shot',
+					items: "\nLuego puedes usar helpers de autotext para generar\ntexto automáticamente de la forma que se te ocurra\ncomo verás a continuación el porcentaje corriendo\n"
+				},
+				{
+					animation: 'replace',
+					delay: 100,
+					render_strategy: 'iterator',
+					placeholder: '<span class="console_text">',
+					items: $().autotext.helper.counter({
+						start: 1,
+						end: 100,
+						step: 1,
+						mask: '%d%'
+					})
+				},
+				{
+					placeholder: '<span class="console_text">',
+					render_strategy: 'text-by-char',
+					items: "\nO simplemente si ninguno te sirve\nCrear tu propio helper inline\n"
+				},
+				{
+					delay: 2000
 				},
 				{
 					animation: 'additive',
