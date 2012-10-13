@@ -42,10 +42,12 @@
 	char_iterator.prototype.next = function() {
 		char = this.text.charAt(this.current_char++);
 		if (char == '\r') {
-			// ignoro el \r
 			char = content.text.charAt(this.current_item++);
-		}
-		if (char == '\n') {
+			if (char == '\n') {
+				char = content.text.charAt(this.current_item++);
+			}
+			char = '<br />';
+		} else if (char == '\n') {
 			char = '<br />';
 		}
 		return char;
@@ -79,7 +81,7 @@
 	}
 
 	function line_iterator(text) {
-		lines = text.match(/^.*((\r\n|\n|\r)|$)/gm);
+		var lines = text.split(/\r\n|\r|\n/);
 		this.delegate = new array_iterator(lines);
 	}
 
@@ -88,7 +90,7 @@
 	}
 
 	line_iterator.prototype.next = function() {
-		return this.delegate.next() + '<br />';
+		return (this.delegate.current_item != 0 ? '<br />' : '') + this.delegate.next();
 	}
 
 	function animate_content(data, content, finish_callback, strategy) {
