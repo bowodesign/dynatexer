@@ -40,7 +40,7 @@
 	}
 
 	char_iterator.prototype.next = function() {
-		char = this.text.charAt(this.current_char++);
+		var char = this.text.charAt(this.current_char++);
 		if (char == '\r') {
 			char = content.text.charAt(this.current_item++);
 			if (char == '\n') {
@@ -203,7 +203,7 @@
 	function init($this, config) {
 		config = set_defaults(config);
 
-		data = $this.data(plugin_name);
+		var data = $this.data(plugin_name);
 
 		if ( ! data ) {
 			$this.data(plugin_name, {
@@ -368,7 +368,7 @@
 		counter: function(config) {
 			return {
 				iterator: function() {
-					it = {
+					var it = {
 						config: $.extend({
 							start: 1,
 							end: 100,
@@ -379,7 +379,7 @@
 							return this.index <= this.config.end;
 						},
 						next: function() {
-							temp = this.index;
+							var temp = this.index;
 							this.index += this.config.step;
 							return this.config.mask.replace('%d', temp);
 						}
