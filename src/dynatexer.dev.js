@@ -380,7 +380,7 @@
 						},
 						next: function() {
 							var temp = this.index;
-							this.index += Math.min(this.config.step, Math.abs(this.config.end - this.index));
+							this.index += Math.max(1, Math.min(this.config.step, Math.abs(this.config.end - this.index)));
 							return this.config.mask.replace('%d', temp);
 						}
 					};
